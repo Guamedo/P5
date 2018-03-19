@@ -1,6 +1,7 @@
 let map;
 let snake;
 let state = 0;
+let topScores = [];
 let namnam;
 let bimba;
 
@@ -13,6 +14,9 @@ function setup() {
     createCanvas(17 * 30, 15 * 30 + 40);
     map = new Map();
     snake = new Snake();
+    for(let i = 0; i < 5; i++){
+        topScores.push(0);
+    }
 }
 
 function draw() {
@@ -36,11 +40,30 @@ function draw() {
             if(snake.isDead){
                 bimba.play();
                 state = 1;
+                let found = false;
+                let index = -1;
+                for(let i = 0; i < 5 && !found; i++){
+                    if(snake.score > topScores[i]){
+                        index = i;
+                        found = true;
+                    }
+                }
+                if(found){
+                    let newTopScores = topScores.slice();
+                    newTopScores[index] = snake.score;
+                    for(let i = index+1; i < 5; i++){
+                        newTopScores[i] = topScores[i-1];
+                    }
+                    topScores = newTopScores;
+                }
+
+                console.log(topScores);
             }
             break;
         case 1:
             textSize(50);
             fill(255);
+
             text("GAME OVER", 90, height/2);
             if(keyIsPressed){
                 if(keyCode === 13){
