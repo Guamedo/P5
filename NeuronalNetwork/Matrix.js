@@ -38,7 +38,19 @@ class Matrix{
             }
             return newMat;
         }else{
-            console.log("ERROR: Is not possible to multiply this two matrix")
+            console.log("ERROR: Is not possible to multiply this two matrix");
+        }
+    }
+
+    addBias(bias){
+        if(this.cols === bias.rows){
+            for(let i = 0; i < this.rows; i++){
+                for(let j = 0; j < this.cols; j++){
+                    this.data[i][j] += bias.data[j][0];
+                }
+            }
+        }else{
+            console.log("ERROR: Is not possible to add this bias")
         }
     }
 }

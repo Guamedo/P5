@@ -1,10 +1,11 @@
+let brain;
+
 function setup() {
-    let mat1 = new Matrix(2, 3);
-    let mat2 = new Matrix(3, 2);
-    mat1.data[0][0] = 2;
-    mat2.data[0][0] = 2;
-    let mat1mat2 = mat1.multiply(mat2);
-    console.log(mat1mat2);
+    createCanvas(600, 600);
+    background(51);
+    brain = new NeuronalNetwork(4, 3, 1);
+    brain.draw();
+
 }
 
 function draw() {
