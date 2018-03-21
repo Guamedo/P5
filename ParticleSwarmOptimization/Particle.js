@@ -7,8 +7,10 @@ class Particle{
         }
         this.dir.normalize();
         this.speed = 2;
-        this.sol = 1000;
-        this.bestSol = 1000;
+        this.solX = 1000;
+        this.solY = 1000;
+        this.bestSolX = 1000;
+        this.bestSolY = 1000;
     }
 
     draw(){
@@ -18,16 +20,20 @@ class Particle{
     }
 
     updateSol(){
-        this.sol = dist(this.pos.x, this.pos.y, 300, 300);
-        if(this.sol < this.bestSol){
-            this.bestSol = this.sol;
+        this.solX = 300 - this.solX;
+        if(this.solX < this.bestSolX){
+            this.bestSolX = this.solX;
+        }
+        this.solY = 300 - this.solY;
+        if(this.solY < this.bestSolY){
+            this.bestSolY = this.solY;
         }
     }
 
-    update(C1, p1, C2, p2, bestGlobalSol){
+    update(C1, p1, C2, p2, bestGlobalSolX, bestGlobalSolY){
         this.pos.add(createVector(this.dir.x*this.speed, this.dir.y*this.speed));
-        this.dir.x += C1*p1*(this.bestSol - this.sol) + C2*p2*(bestGlobalSol - this.sol);
-        this.dir.y += C1*p1*(this.bestSol - this.sol) + C2*p2*(bestGlobalSol - this.sol);
+        this.dir.x += C1*p1*(this.bestSolX - this.solX) + C2*p2*(bestGlobalSolX - this.solX);
+        this.dir.y += C1*p1*(this.bestSolY - this.solX) + C2*p2*(bestGlobalSolY - this.solY);
         this.dir.normalize();
     }
 }

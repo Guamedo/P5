@@ -36,7 +36,8 @@ class Sudoku{
         }
     }
 
-    update(){
+     update(){
+        let isComplete = true;
         for(let i = 0; i < 9; i++) {
             for (let j = 0; j < 9; j++) {
                 if(!this.cells[j][i].isInitialVal && this.cells[j][i].val !== '-') {
@@ -63,7 +64,11 @@ class Sudoku{
                         }
                     }
                 }
+                if(this.cells[j][i].val === '-' || !this.cells[j][i].isCorrect){
+                    isComplete = false;
+                }
             }
         }
+        return isComplete;
     }
 }

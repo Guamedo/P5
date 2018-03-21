@@ -4,7 +4,8 @@ let C1;
 let p1;
 let C2;
 let p2;
-let bestGlobalSol = 1000;
+let bestGlobalSolX = 1000;
+let bestGlobalSolY = 1000;
 
 function setup() {
     createCanvas(600, 600);
@@ -22,10 +23,13 @@ function draw() {
     background(51);
     particleSwarm.forEach(p => p.updateSol());
     particleSwarm.forEach(function(p){
-       if(p.bestSol < bestGlobalSol){
-           bestGlobalSol = p.bestSol;
+       if(p.bestSolX < bestGlobalSolX){
+           bestGlobalSolX = p.bestSolX;
        }
+        if(p.bestSolY < bestGlobalSolY){
+            bestGlobalSolY = p.bestSolY;
+        }
     });
-    particleSwarm.forEach(p => p.update(C1, p1, C2, p2, bestGlobalSol));
+    particleSwarm.forEach(p => p.update(C1, p1, C2, p2, bestGlobalSolX, bestGlobalSolY));
     particleSwarm.forEach(p => p.draw());
 }
