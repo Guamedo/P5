@@ -31,8 +31,8 @@ function draw() {
         case 0:
             manageInput();
 
-            snake.update(map);
-            map.update(snake);
+            //snake.update(map);
+            //map.update(snake);
 
             map.draw();
             snake.draw2();
@@ -84,7 +84,7 @@ function manageInput() {
     if (snake.pos.x % map.blockSize === 0 && snake.pos.y % map.blockSize === 0) {
         if (keyCode === 38)/*UP*/{
             if (snake.dir.y !== 1) {
-                snake.faceDir = 3;
+                snake.faceDir = 0;
                 snake.dir = createVector(0, -1);
             }
         }
@@ -96,13 +96,13 @@ function manageInput() {
         }
         if (keyCode === 37)/*LEFT*/{
             if (snake.dir.x !== 1) {
-                snake.faceDir = 1;
+                snake.faceDir = 3;
                 snake.dir = createVector(-1, 0);
             }
         }
         if (keyCode === 39)/*RIGHT*/{
             if (snake.dir.x !== -1) {
-                snake.faceDir = 0;
+                snake.faceDir = 1;
                 snake.dir = createVector(1, 0);
             }
         }

@@ -104,6 +104,14 @@ class NeuronalNetwork{
         }
     }
 
+    blend(nn){
+        let newNN = new NeuronalNetwork(this.input.cols, this.W1.cols, this.output.cols);
+        newNN.W1 = this.W1.blend(nn.W1);
+        newNN.b1 = this.b1.blend(nn.b1);
+        newNN.W2 = this.W2.blend(nn.W2);
+        newNN.b2 = this.b2.blend(nn.b2);
+    }
+
     static reLu(x){
         return Math.max(0, x);
     }

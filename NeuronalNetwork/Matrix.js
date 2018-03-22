@@ -1,5 +1,14 @@
 class Matrix{
-    constructor(rows, cols, initRandom = false){
+    /***********************************************************************************
+    * Generates a new Matrix Object:
+    *  - rows: Number of rows of the matrix.
+    *  - cols: Number of columns of the matrix.
+    *  - innitRandom: If true the matrix will be initialised with random values, else
+    *                 will be initialised with zeros. Is set to false by default.
+    *  - randomMin: Minimum value for random initialization.
+    *  - randomMax: Maximum value for random initialization.
+    ***********************************************************************************/
+    constructor(rows, cols, initRandom = false, randomMin = -1, randomMax = 1){
         this.rows = rows;
         this.cols = cols;
         this.data = [];
@@ -7,7 +16,7 @@ class Matrix{
             for (let i = 0; i < this.rows; i++) {
                 let newRow = [];
                 for (let j = 0; j < this.cols; j++) {
-                    newRow.push(random(-1, 1));
+                    newRow.push(random(randomMin, randomMax));
                 }
                 this.data.push(newRow);
             }
@@ -22,6 +31,7 @@ class Matrix{
         }
     }
 
+    // Multiplies this matrix with <mat> and return a new matrix with the result
     multiply(mat){
         if(this.cols === mat.rows){
             // Create the matrix with the result
@@ -42,6 +52,7 @@ class Matrix{
         }
     }
 
+    // Adds the <bias> vector to this matrix
     addBias(bias){
         if(this.cols === bias.rows){
             for(let i = 0; i < this.rows; i++){
@@ -51,6 +62,26 @@ class Matrix{
             }
         }else{
             console.log("ERROR: Is not possible to add this bias")
+        }
+    }
+
+    // Bend this matrix with <matrix> and return the result in a new matrix
+    blend(matrix){
+        if(this.rows === matrix.rows && this.cols === matrix.cols) {
+
+            let newMat = new Matrix(this.rows, this.cols);
+
+            for (let i = 0; i < this.rows; i++) {
+                for (let j = 0; j < this.cols; j++) {
+                    if(random(0, 1) < 0.5){
+                        newMat.data[i][j] = this.data[i][j];
+                    }else{
+                        newMat.data[i][j] = matrix.data[i][j];
+                    }
+                }
+            }
+        }else{
+            console.error("ERROR: Is not possible to blend two matrices of different size");
         }
     }
 }

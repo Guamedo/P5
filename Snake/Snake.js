@@ -3,11 +3,14 @@ class Snake{
         this.pos = createVector(120, 210);
         this.dir = createVector(1, 0);
         this.step = 3;
-        this.faceDir = 0;
+        this.faceDir = 1;
         this.tail = new Cacho(createVector(this.pos.x - 30, this.pos.y), createVector(this.dir.x, this.dir.y), this.step);
         this.addNewCacho = false;
         this.isDead = false;
         this.score = 0;
+        this.distancesToNextObstacles = [225, 375, 225];
+        this.distanceToFood = Math.abs(375 - this.pos.x);
+        //TODO: Add a NN to the snake
     }
 
     draw(){
@@ -21,11 +24,11 @@ class Snake{
         stroke(0);
         strokeWeight(4);
         switch (this.faceDir){
-            case 0/*RIGHT*/:
+            case 1/*RIGHT*/:
                 point(this.pos.x+15+8, this.pos.y+15+4);
                 point(this.pos.x+15+8, this.pos.y+15-4);
                 break;
-            case 1/*LEFT*/:
+            case 3/*LEFT*/:
                 point(this.pos.x+15-8, this.pos.y+15+4);
                 point(this.pos.x+15-8, this.pos.y+15-4);
                 break;
@@ -33,7 +36,7 @@ class Snake{
                 point(this.pos.x+15+4, this.pos.y+15+8);
                 point(this.pos.x+15-4, this.pos.y+15+8);
                 break;
-            case 3/*LEFT*/:
+            case 0/*UP*/:
                 point(this.pos.x+15+4, this.pos.y+15-8);
                 point(this.pos.x+15-4, this.pos.y+15-8);
                 break;
@@ -65,11 +68,11 @@ class Snake{
         stroke(0);
         strokeWeight(4);
         switch (this.faceDir){
-            case 0/*RIGHT*/:
+            case 1/*RIGHT*/:
                 point(this.pos.x+15+6, this.pos.y+15+4);
                 point(this.pos.x+15+6, this.pos.y+15-4);
                 break;
-            case 1/*LEFT*/:
+            case 3/*LEFT*/:
                 point(this.pos.x+15-6, this.pos.y+15+4);
                 point(this.pos.x+15-6, this.pos.y+15-4);
                 break;
@@ -77,7 +80,7 @@ class Snake{
                 point(this.pos.x+15+4, this.pos.y+15+6);
                 point(this.pos.x+15-4, this.pos.y+15+6);
                 break;
-            case 3/*LEFT*/:
+            case 0/*UP*/:
                 point(this.pos.x+15+4, this.pos.y+15-6);
                 point(this.pos.x+15-4, this.pos.y+15-6);
                 break;
@@ -88,7 +91,6 @@ class Snake{
     }
 
     update(map){
-
         if (this.pos.x % map.blockSize === 0 && this.pos.y % map.blockSize === 0) {
             if(this.addNewCacho){
                 this.tail.addCacho();
@@ -109,6 +111,10 @@ class Snake{
         }
         if(this.tail != null){
             this.tail.update();
+        }
+
+        if (this.pos.x % map.blockSize === 0 && this.pos.y % map.blockSize === 0) {
+            //TODO: Generate the NN Input and predict the output
         }
     }
 
