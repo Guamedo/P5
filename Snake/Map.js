@@ -3,14 +3,25 @@ class Map{
         this.cols = 17;
         this.rows = 15;
         this.blockSize = 30;
-        this.foodPos = createVector(12, 7);
+        //4 7
+        let p1 = round(random(0, 16));
+        while(p1 === 4){
+            p1 = round(random(0, 16));
+        }
+
+        let p2 = round(random(0, 14));
+        while(p2 === 7){
+            p2 = round(random(0, 14));
+        }
+
+        this.foodPos = createVector(p1, p2);
         this.foodTimer = 0;
         this.needFood = false;
     }
 
     draw(){
         noStroke();
-        for(let y = 0; y < this.rows; y++){
+        /*for(let y = 0; y < this.rows; y++){
             for(let x = 0; x < this.cols; x++){
                 if((x+this.rows*y)%2 === 0){
                     fill(100);
@@ -19,7 +30,7 @@ class Map{
                 }
                 rect(x*this.blockSize, y*this.blockSize, this.blockSize, this.blockSize);
             }
-        }
+        }*/
         //if(this.foodTimer === 0){
             fill(200, 50, 50);
             ellipse(this.foodPos.x*this.blockSize + this.blockSize/2,
@@ -64,7 +75,10 @@ class Map{
             let foodCenterX = this.foodPos.x*this.blockSize + this.blockSize/2;
             let foodCenterY = this.foodPos.y*this.blockSize + this.blockSize/2;
             if(dist(snakeCenterX, snakeCenterY, foodCenterX, foodCenterY) <= this.blockSize/2){
-                namnam.play();
+                if(!mute) {
+                    namnam.play();
+                }
+                snake.setFoodTimerToZero();
                 snake.setAddNewCacho();
                 this.needFood = true;
                 this.foodTimer = 3;

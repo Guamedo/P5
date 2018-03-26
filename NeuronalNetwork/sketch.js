@@ -1,8 +1,8 @@
 let brain;
 
-var input = 7;
-var hidden = 5;
-var output = 1;
+var input = 12;
+var hidden = 8;
+var output = 4;
 
 var pInput = input;
 var pHidden = hidden;
@@ -21,7 +21,7 @@ function setup() {
     brain.predict();
     brain.draw(0, 0, 600, 600);
 
-    var gui = createGui('Parameters', 500, 0);
+    var gui = createGui('Parameters', 600, 0);
     sliderRange(1, 100, 1);
     gui.addGlobals('input', 'hidden', 'output');
 }

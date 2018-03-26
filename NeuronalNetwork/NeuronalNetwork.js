@@ -1,13 +1,17 @@
 class NeuronalNetwork{
-    constructor(input, hidden, output, aFunction1 = NeuronalNetwork.reLu, aFunction2 = NeuronalNetwork.sigmoid){
+    constructor(input, hidden, output, weightMin = -1, weightMax = 1,
+                aFunction1 = NeuronalNetwork.reLu, aFunction2 = NeuronalNetwork.sigmoid){
         this.input = new Matrix(1, input);
-        this.W1 = new Matrix(input, hidden, true);
-        this.b1 = new Matrix(hidden, 1, true);
+        this.W1 = new Matrix(input, hidden, true, weightMin, weightMax);
+        this.b1 = new Matrix(hidden, 1, true, weightMin, weightMax);
         this.aFunction1 = aFunction1;
-        this.W2 = new Matrix(hidden, output, true);
-        this.b2 = new Matrix(output, 1, true);
+        this.W2 = new Matrix(hidden, output, true, weightMin, weightMax);
+        this.b2 = new Matrix(output, 1, true, weightMin, weightMax);
         this.aFunction2 = aFunction2;
         this.output = new Matrix(1, output);
+
+        this.weightMin = weightMin;
+        this.weightMax = weightMax;
     }
 
     loadInputFromArray(array){
@@ -23,14 +27,13 @@ class NeuronalNetwork{
     getOutputAsArray(){
         let outputArray = [];
         for(let i = 0; i < this.output.cols; i++){
-            outputArray.push(this.output.data[i][0]);
+            outputArray.push(this.output.data[0][i]);
         }
         return outputArray;
     }
 
     predict(){
         let out = this.input.multiply(this.W1);
-        console.log(out);
         out.addBias(this.b1);
         for(let i = 0; i < out.rows; i++){
             for(let j = 0; j < out.cols; j++){
@@ -105,11 +108,21 @@ class NeuronalNetwork{
     }
 
     blend(nn){
-        let newNN = new NeuronalNetwork(this.input.cols, this.W1.cols, this.output.cols);
+        let newNN = new NeuronalNetwork(this.input.cols, this.W1.cols, this.output.cols, this.weightMin, this.weightMax);
         newNN.W1 = this.W1.blend(nn.W1);
         newNN.b1 = this.b1.blend(nn.b1);
         newNN.W2 = this.W2.blend(nn.W2);
         newNN.b2 = this.b2.blend(nn.b2);
+        return newNN;
+    }
+
+    blendWithMutation(nn, p, mRange){
+        let newNN = new NeuronalNetwork(this.input.cols, this.W1.cols, this.output.cols, this.weightMin, this.weightMax);
+        newNN.W1 = this.W1.blendWithMutation(nn.W1, p, mRange);
+        newNN.b1 = this.b1.blendWithMutation(nn.b1, p, mRange);
+        newNN.W2 = this.W2.blendWithMutation(nn.W2, p, mRange);
+        newNN.b2 = this.b2.blendWithMutation(nn.b2, p, mRange);
+        return newNN;
     }
 
     static reLu(x){

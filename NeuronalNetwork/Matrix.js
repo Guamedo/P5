@@ -80,6 +80,34 @@ class Matrix{
                     }
                 }
             }
+            return newMat;
+        }else{
+            console.error("ERROR: Is not possible to blend two matrices of different size");
+        }
+    }
+
+    // Bend this matrix with <matrix> and adds mutation o the result
+    blendWithMutation(matrix, p, mRange){
+        if(this.rows === matrix.rows && this.cols === matrix.cols) {
+
+            let newMat = new Matrix(this.rows, this.cols);
+
+            for (let i = 0; i < this.rows; i++) {
+                for (let j = 0; j < this.cols; j++) {
+                    if(random(0, 1) < 0.5){
+                        newMat.data[i][j] = this.data[i][j];
+                        if(random(0, 1) < p){
+                            newMat.data[i][j] += random(-mRange, mRange);
+                        }
+                    }else{
+                        newMat.data[i][j] = matrix.data[i][j];
+                        if(random(0, 1) < p){
+                            newMat.data[i][j] += random(-mRange, mRange);
+                        }
+                    }
+                }
+            }
+            return newMat;
         }else{
             console.error("ERROR: Is not possible to blend two matrices of different size");
         }

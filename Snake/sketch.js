@@ -1,9 +1,14 @@
 let map;
-let snake;
+//let snake;
 let state = 0;
-let topScores = [];
 let namnam;
 let bimba;
+let mute = true;
+
+let population = [];
+let numberOfSnakes = 20;
+let snake;
+let generation = 0;
 
 function preload(){
     namnam = loadSound('namnam.mp3');
@@ -13,10 +18,13 @@ function preload(){
 function setup() {
     createCanvas(17 * 30, 15 * 30 + 40);
     map = new Map();
-    snake = new Snake();
-    for(let i = 0; i < 5; i++){
-        topScores.push(0);
+    //snake = new Snake();
+
+    for(let i = 0; i < numberOfSnakes; i++){
+        population.push(new Snake());
     }
+    snake  = 0;
+    //console.log(population[snake].isDead);
 }
 
 function draw() {
@@ -26,83 +34,122 @@ function draw() {
     rect(0, 15 * 30, width, 40);
     textSize(24);
     fill(255);
-    text("Score: " + snake.score, 10, 480)
+    text("Score: " + population[snake].score + "  Snake: " + snake + "  Generation: " + generation, 10, 480);
     switch (state){
         case 0:
-            manageInput();
+            //manageInput();
+            for(let i = 0; i < 10; i++) {
+                population[snake].update(map);
+                map.update(population[snake]);
 
-            //snake.update(map);
-            //map.update(snake);
+                map.draw();
+                population[snake].draw2();
 
-            map.draw();
-            snake.draw2();
-
-            if(snake.isDead){
-                bimba.play();
-                state = 1;
-                let found = false;
-                let index = -1;
-                for(let i = 0; i < 5 && !found; i++){
-                    if(snake.score > topScores[i]){
-                        index = i;
-                        found = true;
+                if (population[snake].isDead) {
+                    population[snake].score += population[snake].time/120;
+                    map = new Map();
+                    snake++;
+                    if (snake >= numberOfSnakes) {
+                        snake = 0;
+                        state = 1;
                     }
                 }
-                if(found){
-                    let newTopScores = topScores.slice();
-                    newTopScores[index] = snake.score;
-                    for(let i = index+1; i < 5; i++){
-                        newTopScores[i] = topScores[i-1];
-                    }
-                    topScores = newTopScores;
-                }
-
-                console.log(topScores);
             }
+
             break;
         case 1:
-            textSize(50);
-            fill(255);
 
-            text("GAME OVER", 90, height/2);
-            if(keyIsPressed){
-                if(keyCode === 13){
-                    map = new Map();
-                    snake = new Snake();
-                    state = 0;
-                }
+            //map = new Map();
+
+            generateNewPopulation();
+            state = 0;
+            /*population = [];
+            for(let i = 0; i < numberOfSnakes; i++){
+                population.push(new Snake());
             }
+            state = 0;*/
+
             break;
         default:
             break;
     }
+}
+
+function generateNewPopulation() {
+    let patata = [];
+
+    let scoresSum = 0;
+    population.forEach(s => scoresSum += s.score);
+
+    patata.push(population[0].score/scoresSum);
+    let bestScore = population[0];
+    let bestScoreIndex = 0;
+    for(let i = 1; i < numberOfSnakes; i++){
+        patata.push(population[i].score/scoresSum + patata[i-1]);
+        if(population[i].score > bestScore){
+            bestScore = population[i].score;
+            bestScoreIndex = i;
+        }
+    }
 
 
+    let newPopulation = [];
+    newPopulation.push(new Snake(population[bestScoreIndex].brain));
+
+    for(let i = 0; i < numberOfSnakes - 1; i++){
+        let random1 = random(0, 1);
+        let random2 = random(0, 1);
+
+        let p1_index = 0;
+        let p2_index = 0;
+
+        let found = false;
+        for(let i = 0; i < patata.length && !found; i++){
+            if(patata[i] >= random1){
+                found = true;
+                p1_index = i;
+            }
+        }
+
+        found = false;
+        for(let i = 0; i < patata.length && !found; i++){
+            if(patata[i] >= random2){
+                found = true;
+                p2_index = i;
+            }
+        }
+
+        let newSnakeBrain = new Snake(population[p1_index].brain.blendWithMutation(population[p2_index].brain, 0.02, 5));
+        console.log(newSnakeBrain);
+        newPopulation.push(newSnakeBrain);
+    }
+    population = newPopulation;
+    generation++;
 }
 
 function manageInput() {
     if (snake.pos.x % map.blockSize === 0 && snake.pos.y % map.blockSize === 0) {
         if (keyCode === 38)/*UP*/{
             if (snake.dir.y !== 1) {
-                snake.faceDir = 0;
+                //snake.faceDir = 0;
                 snake.dir = createVector(0, -1);
             }
         }
         if (keyCode === 40)/*DOWN*/{
             if (snake.dir.y !== -1) {
-                snake.faceDir = 2;
+                //snake.faceDir = 2;
                 snake.dir = createVector(0, 1);
             }
         }
         if (keyCode === 37)/*LEFT*/{
             if (snake.dir.x !== 1) {
-                snake.faceDir = 3;
+                //snake.faceDir = 3;
                 snake.dir = createVector(-1, 0);
             }
         }
         if (keyCode === 39)/*RIGHT*/{
             if (snake.dir.x !== -1) {
-                snake.faceDir = 1;
+                //snake.faceDir = 1;
                 snake.dir = createVector(1, 0);
             }
         }
