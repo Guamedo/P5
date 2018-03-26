@@ -10,6 +10,8 @@ let numberOfSnakes = 20;
 let snake;
 let generation = 0;
 
+let step = 10;
+
 function preload(){
     namnam = loadSound('namnam.mp3');
     bimba = loadSound('bimba.mp3');
@@ -34,11 +36,11 @@ function draw() {
     rect(0, 15 * 30, width, 40);
     textSize(24);
     fill(255);
-    text("Score: " + population[snake].score + "  Snake: " + snake + "  Generation: " + generation, 10, 480);
+    text("Score: " + population[snake].score.toFixed(2) + "  Snake: " + snake + "  Generation: " + generation, 10, 480);
     switch (state){
         case 0:
             //manageInput();
-            for(let i = 0; i < 10; i++) {
+            for(let i = 0; i < step; i++) {
                 population[snake].update(map);
                 map.update(population[snake]);
 
@@ -46,7 +48,7 @@ function draw() {
                 population[snake].draw2();
 
                 if (population[snake].isDead) {
-                    population[snake].score += population[snake].time/120;
+                    //population[snake].score += population[snake].time/120;
                     map = new Map();
                     snake++;
                     if (snake >= numberOfSnakes) {
@@ -125,6 +127,19 @@ function generateNewPopulation() {
     }
     population = newPopulation;
     generation++;
+}
+
+function keyPressed(){
+    if(keyCode === 13){
+        switch (step){
+            case 10:
+                step = 100;
+                break;
+            case 100:
+                step = 10;
+                break;
+        }
+    }
 }
 
 function manageInput() {

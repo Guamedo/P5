@@ -1,23 +1,26 @@
 class Snake{
     constructor(brain = new NeuronalNetwork(12, 8, 4, -20, 20)){
-        this.pos = createVector(8*30, 7*30);
-        this.dir = createVector(1, 0);
-        this.step = 3;
-        this.faceDir = 1;
+
+        this.pos = createVector(8*30, 7*30); // Snake position
+        this.step = 3; // Snake speed
+
+        this.faceDir = 1; // Snake direction (UP=0, RIGHT=1, DOWN=2, LEFT=3);
+        this.dir = createVector(1, 0); // Snake direction (vector)
+
+        //Linked list with the tail "cachos"
         this.tail = new Cacho(createVector(this.pos.x - 30, this.pos.y), createVector(this.dir.x, this.dir.y), this.step);
-        this.addNewCacho = false;
+        this.addNewCacho = false; // Snakes needs new cacho
         this.isDead = false;
         this.score = 0;
-        this.distancesToNextObstacles = [225, 375, 225];
-        this.posOfNextObstacles= [createVector(0, 0), createVector(0, 0), createVector(0, 0)];
-        this.distanceToFood = Math.abs(375 - this.pos.x);
 
-        //NN
-        this.brain = brain;
-        this.foodTimer = 0;
-        this.time = 0;
+        this.foodTimer = 0; // Time since last food
+        this.time = 0; // Time alive
+
+        this.brain = brain; // NN
+
     }
 
+    //Function to draw the snake with rectangles
     draw(){
         fill(50, 200, 50);
         if(this.dir.x !== 0){
@@ -29,23 +32,21 @@ class Snake{
         stroke(0);
         strokeWeight(4);
         switch (this.faceDir){
+            case 0/*UP*/:
+                point(this.pos.x+15+4, this.pos.y+15-8);
+                point(this.pos.x+15-4, this.pos.y+15-8);
+                break;
             case 1/*RIGHT*/:
                 point(this.pos.x+15+8, this.pos.y+15+4);
                 point(this.pos.x+15+8, this.pos.y+15-4);
-                break;
-            case 3/*LEFT*/:
-                point(this.pos.x+15-8, this.pos.y+15+4);
-                point(this.pos.x+15-8, this.pos.y+15-4);
                 break;
             case 2/*DOWN*/:
                 point(this.pos.x+15+4, this.pos.y+15+8);
                 point(this.pos.x+15-4, this.pos.y+15+8);
                 break;
-            case 0/*UP*/:
-                point(this.pos.x+15+4, this.pos.y+15-8);
-                point(this.pos.x+15-4, this.pos.y+15-8);
-                break;
-            default:
+            case 3/*LEFT*/:
+                point(this.pos.x+15-8, this.pos.y+15+4);
+                point(this.pos.x+15-8, this.pos.y+15-4);
                 break;
         }
         pop();
@@ -55,6 +56,7 @@ class Snake{
         }
     }
 
+    // Function to draw the snake with curves
     draw2(){
         push();
         beginShape();
@@ -73,33 +75,27 @@ class Snake{
         stroke(0);
         strokeWeight(4);
         switch (this.faceDir){
+            case 0/*UP*/:
+                point(this.pos.x+15+4, this.pos.y+15-6);
+                point(this.pos.x+15-4, this.pos.y+15-6);
+                break;
             case 1/*RIGHT*/:
                 point(this.pos.x+15+6, this.pos.y+15+4);
                 point(this.pos.x+15+6, this.pos.y+15-4);
-                break;
-            case 3/*LEFT*/:
-                point(this.pos.x+15-6, this.pos.y+15+4);
-                point(this.pos.x+15-6, this.pos.y+15-4);
                 break;
             case 2/*DOWN*/:
                 point(this.pos.x+15+4, this.pos.y+15+6);
                 point(this.pos.x+15-4, this.pos.y+15+6);
                 break;
-            case 0/*UP*/:
-                point(this.pos.x+15+4, this.pos.y+15-6);
-                point(this.pos.x+15-4, this.pos.y+15-6);
-                break;
-            default:
+            case 3/*LEFT*/:
+                point(this.pos.x+15-6, this.pos.y+15+4);
+                point(this.pos.x+15-6, this.pos.y+15-4);
                 break;
         }
-        /*
-        line(this.pos.x + 15, this.pos.y + 15, this.posOfNextObstacles[0].x, this.posOfNextObstacles[0].y);
-        line(this.pos.x + 15, this.pos.y + 15, this.posOfNextObstacles[1].x, this.posOfNextObstacles[1].y);
-        line(this.pos.x + 15, this.pos.y + 15, this.posOfNextObstacles[2].x, this.posOfNextObstacles[2].y);
-        */
         pop();
     }
 
+    //Update the snake position
     update(map){
         this.time += 1/60;
         this.foodTimer += 1/60;
@@ -272,17 +268,6 @@ class Snake{
 
                 }
 
-                // if (this.brain.output.data[0][0] < 1 / 3) {
-                //     this.faceDir--;
-                //     if (this.faceDir < 0) {
-                //         this.faceDir = 3;
-                //     }
-                // } else if (this.brain.output.data[0][0] < 2 / 3) {
-                //     this.faceDir++;
-                //     if (this.faceDir > 3) {
-                //         this.faceDir = 0;
-                //     }
-                // }
                 switch (this.faceDir) {
                     case 0:
                         this.dir = createVector(0, -1);
@@ -297,12 +282,15 @@ class Snake{
                         this.dir = createVector(-1, 0);
                         break;
                 }
+                this.score += (1-Math.pow(dist(this.pos.x, this.pos.y, map.foodPos.x, map.foodPos.y)/600, 2));
+
             }
+
         }
     }
 
     setAddNewCacho(){
-        this.score++;
+        //this.score++;
         this.addNewCacho = true;
     }
 
