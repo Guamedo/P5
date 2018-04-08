@@ -1,5 +1,5 @@
 class Snake{
-    constructor(brain = new NeuronalNetwork(12, 8, 4, -20, 20)){
+    constructor(brain = new NeuronalNetwork(13, 8, 4, -20, 20)){
 
         this.pos = createVector(8*30, 7*30); // Snake position
         this.step = 3; // Snake speed
@@ -12,6 +12,7 @@ class Snake{
         this.addNewCacho = false; // Snakes needs new cacho
         this.isDead = false;
         this.score = 0;
+        this.scoreD = 0;
 
         this.foodTimer = 0; // Time since last food
         this.time = 0; // Time alive
@@ -201,6 +202,7 @@ class Snake{
                 for(let i = 0; i < input.length; i++){
                     input[i] = input[i]/600;
                 }
+                input.concat(this.foodTimer/30);
                 this.brain.loadInputFromArray(input);
                 //console.log(i1);
                 this.brain.predict();
@@ -271,26 +273,38 @@ class Snake{
                 switch (this.faceDir) {
                     case 0:
                         this.dir = createVector(0, -1);
+                        if(distToFood[0] > 0){
+                            this.scoreD ++;
+                        }
                         break;
                     case 1:
                         this.dir = createVector(1, 0);
+                        if(distToFood[1] > 0){
+                            this.scoreD ++;
+                        }
                         break;
                     case 2:
                         this.dir = createVector(0, 1);
+                        if(distToFood[2] > 0){
+                            this.scoreD ++;
+                        }
                         break;
                     case 3:
                         this.dir = createVector(-1, 0);
+                        if(distToFood[3] > 0){
+                            this.scoreD ++;
+                        }
                         break;
                 }
-                this.score += (1-Math.pow(dist(this.pos.x, this.pos.y, map.foodPos.x, map.foodPos.y)/600, 2));
-
+                //this.score -= Math.pow(dist(this.pos.x, this.pos.y, map.foodPos.x, map.foodPos.y)/300, 2);
             }
 
         }
     }
 
     setAddNewCacho(){
-        //this.score++;
+        this.score += this.scoreD;
+        this.scoreD = 0;
         this.addNewCacho = true;
     }
 

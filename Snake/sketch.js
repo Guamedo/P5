@@ -6,7 +6,7 @@ let bimba;
 let mute = true;
 
 let population = [];
-let numberOfSnakes = 20;
+let numberOfSnakes = 100;
 let snake;
 let generation = 0;
 
