@@ -3,6 +3,7 @@ let G = 0.6674;
 let sc = 1;
 
 let leftCanvas = function(lc){
+
     lc.setup = function(){
         lc.createCanvas(600, 600);
         lc.background(51);
