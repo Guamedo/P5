@@ -34,10 +34,7 @@ function setup(){
 
     goalPos = createVector(cols-1, rows-1);
 
-
-
-
-    //frameRate(20);
+    frameRate(120);
 }
 
 function draw(){
@@ -46,7 +43,6 @@ function draw(){
 
     switch(state){
         case 0:
-
             // Draw greed
             for(let i = 0; i < cols; i++){
                 for(let j = 0; j < rows; j++){
@@ -67,13 +63,11 @@ function draw(){
             }else{
                 rect(mouseX-cellSize/2, mouseY-cellSize/2, cellSize, cellSize);
             }
-
-
             break;
         case 1:
             if (openSet.length > 0 && !found) {
 
-                openSet.sort(function(a, b) {
+                openSet.sort(function (a, b) {
                     return b.fScore - a.fScore;
                 });
                 current = openSet.pop();
@@ -84,28 +78,29 @@ function draw(){
                 current.visited = true;
                 let neighbors = getNeighbors(current);
                 //console.log(neighbors);
-                for(let i = 0; i < neighbors.length; i++){
+                for (let i = 0; i < neighbors.length; i++) {
                     neighbors[i].evaluated = true;
-                    if(!neighbors[i].visited){
-                        if(openSet.indexOf(neighbors[i]) < 0){
+                    if (!neighbors[i].visited) {
+                        if (openSet.indexOf(neighbors[i]) < 0) {
                             openSet.push(neighbors[i]);
                         }
 
                         let newG = current.gScore + current.pos.dist(neighbors[i].pos);
-                        if(newG < neighbors[i].gScore){
+                        if (newG < neighbors[i].gScore) {
                             neighbors[i].cameFrome = current;
                             neighbors[i].gScore = newG;
                             neighbors[i].fScore = newG + heuristicCost(neighbors[i].pos, goalPos);
                         }
                     }
                 }
-            }else if(openSet.length === 0 && !found){
+            } else if (openSet.length === 0 && !found) {
                 console.log("Failed to find a way to the goal");
                 noLoop();
-            }else{
+            } else {
                 console.log("Found the way to the goal");
                 noLoop();
             }
+
 
             // Draw greed
             for(let i = 0; i < cols; i++){

@@ -96,6 +96,8 @@ class Snake{
         pop();
     }
 
+
+
     //Update the snake position
     update(map){
         this.time += 1/60;
@@ -126,7 +128,7 @@ class Snake{
             }
 
             if (this.pos.x % map.blockSize === 0 && this.pos.y % map.blockSize === 0) {
-
+                /*
                 let distToWalls = [this.pos.y, (width - this.pos.x), (height - this.pos.y), this.pos.x];
                 let distToTail = [0, 0, 0, 0];
                 let distToFood = [0, 0, 0, 0];
@@ -295,7 +297,7 @@ class Snake{
                             this.scoreD ++;
                         }
                         break;
-                }
+                }*/
                 //this.score -= Math.pow(dist(this.pos.x, this.pos.y, map.foodPos.x, map.foodPos.y)/300, 2);
             }
 

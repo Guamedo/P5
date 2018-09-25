@@ -7490,7 +7490,7 @@ module.exports={
             "name": "rotateX",
             "params": [
                 {
-                    "name": "rad",
+                    "name": "diam",
                     "description": "<p>angles in radians</p>\n",
                     "type": "Number"
                 }
@@ -7512,7 +7512,7 @@ module.exports={
             "name": "rotateY",
             "params": [
                 {
-                    "name": "rad",
+                    "name": "diam",
                     "description": "<p>angles in radians</p>\n",
                     "type": "Number"
                 }
@@ -7534,7 +7534,7 @@ module.exports={
             "name": "rotateZ",
             "params": [
                 {
-                    "name": "rad",
+                    "name": "diam",
                     "description": "<p>angles in radians</p>\n",
                     "type": "Number"
                 }
@@ -10718,7 +10718,7 @@ module.exports={
             "itemtype": "method",
             "name": "httpDo",
             "example": [
-                "\n<div>\n<code>\n// Examples use USGS Earthquake API:\n// https://earthquake.usgs.gov/fdsnws/event/1/#methods\n\n// displays an animation of all USGS earthquakes\nvar earthquakes;\nvar eqFeatureIndex = 0;\n\nfunction preload() {\n  var url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson';\n  httpDo(\n    url,\n    {\n      method: 'GET',\n      // Other Request options, like special headers for apis\n      headers: { authorization: 'Bearer secretKey' }\n    },\n    function(res) {\n      earthquakes = res;\n    }\n  );\n}\n\nfunction draw() {\n  // wait until the data is loaded\n  if (!earthquakes || !earthquakes.features[eqFeatureIndex]) {\n    return;\n  }\n  clear();\n\n  var feature = earthquakes.features[eqFeatureIndex];\n  var mag = feature.properties.mag;\n  var rad = mag / 11 * ((width + height) / 2);\n  fill(255, 0, 0, 100);\n  ellipse(width / 2 + random(-2, 2), height / 2 + random(-2, 2), rad, rad);\n\n  if (eqFeatureIndex >= earthquakes.features.length) {\n    eqFeatureIndex = 0;\n  } else {\n    eqFeatureIndex += 1;\n  }\n}\n</code>\n</div>"
+                "\n<div>\n<code>\n// Examples use USGS Earthquake API:\n// https://earthquake.usgs.gov/fdsnws/event/1/#methods\n\n// displays an animation of all USGS earthquakes\nvar earthquakes;\nvar eqFeatureIndex = 0;\n\nfunction preload() {\n  var url = 'https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson';\n  httpDo(\n    url,\n    {\n      method: 'GET',\n      // Other Request options, like special headers for apis\n      headers: { authorization: 'Bearer secretKey' }\n    },\n    function(res) {\n      earthquakes = res;\n    }\n  );\n}\n\nfunction draw() {\n  // wait until the data is loaded\n  if (!earthquakes || !earthquakes.features[eqFeatureIndex]) {\n    return;\n  }\n  clear();\n\n  var feature = earthquakes.features[eqFeatureIndex];\n  var mag = feature.properties.mag;\n  var diam = mag / 11 * ((width + height) / 2);\n  fill(255, 0, 0, 100);\n  ellipse(width / 2 + random(-2, 2), height / 2 + random(-2, 2), diam, diam);\n\n  if (eqFeatureIndex >= earthquakes.features.length) {\n    eqFeatureIndex = 0;\n  } else {\n    eqFeatureIndex += 1;\n  }\n}\n</code>\n</div>"
             ],
             "class": "p5",
             "module": "IO",
@@ -14300,7 +14300,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div class= “norender\">\n<code>\nvar rad = PI / 4;\nvar deg = degrees(rad);\nprint(rad + ' radians is ' + deg + ' degrees');\n// Prints: 0.7853981633974483 radians is 45 degrees\n</code>\n</div>\n"
+                "\n<div class= “norender\">\n<code>\nvar diam = PI / 4;\nvar deg = degrees(diam);\nprint(diam + ' radians is ' + deg + ' degrees');\n// Prints: 0.7853981633974483 radians is 45 degrees\n</code>\n</div>\n"
             ],
             "class": "p5",
             "module": "Math",
@@ -14324,7 +14324,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div class= “norender\">\n<code>\nvar deg = 45.0;\nvar rad = radians(deg);\nprint(deg + ' degrees is ' + rad + ' radians');\n// Prints: 45 degrees is 0.7853981633974483 radians\n</code>\n</div>"
+                "\n<div class= “norender\">\n<code>\nvar deg = 45.0;\nvar diam = radians(deg);\nprint(deg + ' degrees is ' + diam + ' radians');\n// Prints: 45 degrees is 0.7853981633974483 radians\n</code>\n</div>"
             ],
             "class": "p5",
             "module": "Math",
@@ -59689,9 +59689,9 @@ p5.prototype.httpPost = function() {
  *
  *   var feature = earthquakes.features[eqFeatureIndex];
  *   var mag = feature.properties.mag;
- *   var rad = mag / 11 * ((width + height) / 2);
+ *   var diam = mag / 11 * ((width + height) / 2);
  *   fill(255, 0, 0, 100);
- *   ellipse(width / 2 + random(-2, 2), height / 2 + random(-2, 2), rad, rad);
+ *   ellipse(width / 2 + random(-2, 2), height / 2 + random(-2, 2), diam, diam);
  *
  *   if (eqFeatureIndex >= earthquakes.features.length) {
  *     eqFeatureIndex = 0;
@@ -65558,9 +65558,9 @@ p5.prototype.tan = function(angle) {
  * @example
  * <div class= “norender">
  * <code>
- * var rad = PI / 4;
- * var deg = degrees(rad);
- * print(rad + ' radians is ' + deg + ' degrees');
+ * var diam = PI / 4;
+ * var deg = degrees(diam);
+ * print(diam + ' radians is ' + deg + ' degrees');
  * // Prints: 0.7853981633974483 radians is 45 degrees
  * </code>
  * </div>
@@ -65584,8 +65584,8 @@ p5.prototype.degrees = function(angle) {
  * <div class= “norender">
  * <code>
  * var deg = 45.0;
- * var rad = radians(deg);
- * print(deg + ' degrees is ' + rad + ' radians');
+ * var diam = radians(deg);
+ * print(deg + ' degrees is ' + diam + ' radians');
  * // Prints: 45 degrees is 0.7853981633974483 radians
  * </code>
  * </div>

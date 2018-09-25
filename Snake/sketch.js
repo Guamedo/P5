@@ -1,5 +1,5 @@
 let map;
-//let snake;
+let snake;
 let state = 0;
 let namnam;
 let bimba;
@@ -7,7 +7,7 @@ let mute = true;
 
 let population = [];
 let numberOfSnakes = 100;
-let snake;
+//let snake;
 let generation = 0;
 
 let step = 10;
@@ -20,12 +20,11 @@ function preload(){
 function setup() {
     createCanvas(17 * 30, 15 * 30 + 40);
     map = new Map();
-    //snake = new Snake();
+    snake = new Snake();
 
     for(let i = 0; i < numberOfSnakes; i++){
         population.push(new Snake());
     }
-    snake  = 0;
     //console.log(population[snake].isDead);
 }
 
@@ -36,8 +35,32 @@ function draw() {
     rect(0, 15 * 30, width, 40);
     textSize(24);
     fill(255);
-    text("Score: " + population[snake].score.toFixed(2) + "  Snake: " + snake + "  Generation: " + generation, 10, 480);
+    //text("Score: " + population[snake].score.toFixed(2) + "  Snake: " + snake + "  Generation: " + generation, 10, 480);
+
+
     switch (state){
+        case 0:
+            manageInput();
+            map.update(snake);
+            map.draw();
+            snake.update(map);
+            snake.draw2();
+            if(snake.isDead){
+                state = 1;
+            }
+            break;
+        case 1:
+            map = new Map();
+            snake = new Snake();
+            state = 0;
+            break;
+        default:
+            break;
+    }
+    map.update(snake);
+    map.draw();
+
+    /*switch (state){
         case 0:
             //manageInput();
             for(let i = 0; i < step; i++) {
@@ -65,16 +88,10 @@ function draw() {
 
             generateNewPopulation();
             state = 0;
-            /*population = [];
-            for(let i = 0; i < numberOfSnakes; i++){
-                population.push(new Snake());
-            }
-            state = 0;*/
-
             break;
         default:
             break;
-    }
+    }*/
 }
 
 function generateNewPopulation() {
@@ -146,25 +163,25 @@ function manageInput() {
     if (snake.pos.x % map.blockSize === 0 && snake.pos.y % map.blockSize === 0) {
         if (keyCode === 38)/*UP*/{
             if (snake.dir.y !== 1) {
-                //snake.faceDir = 0;
+                snake.faceDir = 0;
                 snake.dir = createVector(0, -1);
             }
         }
         if (keyCode === 40)/*DOWN*/{
             if (snake.dir.y !== -1) {
-                //snake.faceDir = 2;
+                snake.faceDir = 2;
                 snake.dir = createVector(0, 1);
             }
         }
         if (keyCode === 37)/*LEFT*/{
             if (snake.dir.x !== 1) {
-                //snake.faceDir = 3;
+                snake.faceDir = 3;
                 snake.dir = createVector(-1, 0);
             }
         }
         if (keyCode === 39)/*RIGHT*/{
             if (snake.dir.x !== -1) {
-                //snake.faceDir = 1;
+                snake.faceDir = 1;
                 snake.dir = createVector(1, 0);
             }
         }
