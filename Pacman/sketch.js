@@ -12,7 +12,7 @@ let mapText = "############################/" +
               "     #o##          ##o#     /" +
               "     #o## ###--### ##o#     /" +
               "######o## #      # ##o######/" +
-              "      o   # EEEE #   o      /" +
+              "      o   # E    #   o      /" +
               "######o## #      # ##o######/" +
               "     #o## ######## ##o#     /" +
               "     #o##          ##o#     /" +
@@ -68,10 +68,12 @@ function draw(){
         case 0:
             manageInput();
 
+            map.draw();
+
             player.update(map);
             enemies.forEach(e => e.update2(map, player));
 
-            map.draw();
+
             player.draw();
             enemies.forEach(e => e.draw());
 
@@ -256,6 +258,6 @@ function initEnemies(){
                 dirP = [3, 2, 8, 3];
                 break;
         }
-        enemies.push(new Enemy(map.enemisInitialPos[i], col, i, dirP));
+        enemies.push(new Enemy(map.enemisInitialPos[i], col, i, dirP, map));
     }
 }

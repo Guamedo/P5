@@ -1,27 +1,26 @@
 class Particle{
-    constructor(pos, dir){
+    constructor(pos, dir, acc){
         this.pos = pos;
         this.dir = dir;
-        this.acc = createVector(0.02, 0.05);
+        this.acc = acc;
+        this.color = color(round(random(0, 255)), round(random(0, 255)), round(random(0, 255)), 255)
     }
 
     draw(){
-        fill(173, 216, 230, 150);
+        fill(this.color);
         noStroke();
         ellipse(this.pos.x, this.pos.y, 5, 5);
     }
 
-    update(){
-        if(this.pos.y < height-100 || this.dir.x <= 0) {
-            this.pos.add(this.dir);
-            this.dir.add(this.acc);
-            this.acc.x *= 0.99;
-        }else{
-            this.dir.y = -random(0.6, 0.9)*this.dir.y;
-            this.dir.x += random(-2, 2);
-            this.pos.add(this.dir);
-            this.dir.add(this.acc);
-            this.acc.x *= 0.99;
+    update(mX, mY){
+        this.pos.add(this.dir);
+        this.dir.add(this.acc);
+        this.acc.y -= 0.01;
+        if(this.pos.dist(createVector(mX, mY)) < 100){
+            let dir = this.pos.copy().sub(createVector(mX, mY));
+            let dist = this.pos.dist(createVector(mX, mY));
+            this.acc.add((dir.normalize().div(dist)).mult(20));
         }
+        this.acc.mult(0.5);
     }
 }

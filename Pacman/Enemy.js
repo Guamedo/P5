@@ -1,5 +1,5 @@
 class Enemy{
-    constructor(pos, col, index, dirP){
+    constructor(pos, col, index, dirP, map){
         this.initialPos = createVector(pos.x, pos.y);
         this.pos = pos;
         this.dir = createVector(0, 0);
@@ -8,6 +8,9 @@ class Enemy{
         this.col = col;
         this.index = index;
         this.directionPriority = dirP;
+
+        this.finder = new AStar(map);
+
         switch(index){
             case 0:
                 this.init = 4;
@@ -35,6 +38,33 @@ class Enemy{
     update(map, player){
         if(this.pos.x % map.blockSize === map.blockSize/2 && this.pos.y % map.blockSize === map.blockSize/2) {
             let rand = random(0, 1);
+            let startCell = this.finder.greed[Math.floor(this.pos.x/18)][Math.floor(this.pos.y/18)];
+            let goalCell = this.finder.greed[Math.floor(player.pos.x/18)][Math.floor(player.pos.y/18)];
+            let goal = this.finder.findPath(startCell.pos, goalCell.pos);
+            if(goal === null){
+                console.log("Gñe");
+            }else{
+                console.log("OK");
+                push();
+                beginShape();
+                noStroke();
+                noFill();
+                strokeWeight(5);
+                stroke(200, 50, 50);
+                vertex(goal.pos.x*18 + 18/2, goal.pos.y*18 + 18/2);
+                //rect(current.pos.x*current.size, current.pos.y*current.size, current.size, current.size);
+                let next = goal.cameFrome;
+                while(next.next != null){
+                    vertex(next.pos.x*18 + 18/2, next.pos.y*18 + 18/2);
+                    //rect(next.pos.x*next.size, next.pos.y*next.size, next.size, next.size);
+                    next = next.cameFrome;
+                }
+                endShape();
+                pop();
+                console.log("next");
+                console.log(next);
+
+            }
             let cosa = false;
             while(!cosa) {
                 rand = random(0, 1);
@@ -90,9 +120,31 @@ class Enemy{
 
     update2(map, player){
         if(this.pos.x % map.blockSize === map.blockSize/2 && this.pos.y % map.blockSize === map.blockSize/2) {
-            if(this.init <= 0) {
+            if(1) {
+
+                let startCell = this.finder.greed[Math.floor(this.pos.x/18)][Math.floor(this.pos.y/18)];
+                let goalCell = this.finder.greed[Math.floor(player.pos.x/18)][Math.floor(player.pos.y/18)];
+                let goal = this.finder.findPath(startCell.pos, goalCell.pos);
+                if(goal === null){
+                    console.log("NOOK");
+                    console.log(startCell);
+                    console.log(goalCell);
+                }else{
+                    let next = goal.cameFrome;
+                    if(next.cameFrome !== null){
+                        while(next.cameFrome.cameFrome !== null){
+                            vertex(next.pos.x*18 + 18/2, next.pos.y*18 + 18/2);
+                            //rect(next.pos.x*next.size, next.pos.y*next.size, next.size, next.size);
+                            next = next.cameFrome;
+                        }
+                        this.dir = next.pos.copy().sub(startCell.pos.copy());
+                    }else{
+                        this.dir = goalCell.pos.copy().sub(startCell.pos.copy());
+                    }
+                }
                 let directions = [];
 
+                /*
                 //DOWN
                 let p = createVector(Math.floor(this.pos.x / map.blockSize), Math.floor(this.pos.y / map.blockSize) + 1);
                 if (map.mapData[p.y][p.x] !== '#' && map.mapData[p.y][p.x] !== '-') {
@@ -133,6 +185,7 @@ class Enemy{
                     default:
                         break;
                 }
+                */
             }else{
                 switch(this.index){
                     case 0:
