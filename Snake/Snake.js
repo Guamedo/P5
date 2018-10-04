@@ -96,8 +96,36 @@ class Snake{
         pop();
     }
 
-    //Update the snake position
     update(map){
+        if(this.foodTimer >= 30){
+            this.isDead = true;
+        }else {
+            if (this.pos.x % map.blockSize === 0 && this.pos.y % map.blockSize === 0) {
+                if (this.addNewCacho) {
+                    this.tail.addCacho();
+                    this.addNewCacho = false;
+                }
+                if (this.tail != null) {
+                    let dirX = (this.pos.x - this.tail.pos.x) / 30;
+                    let dirY = (this.pos.y - this.tail.pos.y) / 30;
+                    this.tail.updateDir(createVector(dirX, dirY));
+                }
+            }
+            this.pos.add(createVector(this.dir.x * this.step, this.dir.y * this.step));
+            if (this.tail != null) {
+                this.tail.checkCollision(this);
+            }
+            if (this.pos.x < 0 || this.pos.x > width - 30 || this.pos.y < 0 || this.pos.y > height - 70) {
+                this.isDead = true;
+            }
+            if (this.tail != null) {
+                this.tail.update();
+            }
+        }
+    }
+
+    //Update the snake position
+    updateNN(map){
         this.time += 1/60;
         this.foodTimer += 1/60;
         if(this.foodTimer >= 30){
