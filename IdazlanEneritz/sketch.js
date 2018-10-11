@@ -1,6 +1,7 @@
 let txt = "Rainbow";
 let txtSize = 250;
 let font;
+let charType;
 
 let lettersPoints = [];
 let charPointList = [];
@@ -11,6 +12,11 @@ let rainbow = [];
 function preload(){
     //Load the font for the text
     font = this.loadFont('fonts/RainbowColors.ttf');
+
+    // Set the char type to 0 or to 1 depending of the font you are using
+    // to check which one you should use test both and stay with the one that
+    // best fits
+    charType = 0;
 }
 
 function setup() {
@@ -45,9 +51,10 @@ function setup() {
     // A CharPoints object contains the points for each letter of the text
     let startIndex = 0;
     for(let i = 0; i < lettersPoints.length; i++){
-        charPointList.push(new CharPoint(points.slice(startIndex, startIndex + lettersPoints[i] - 1), splitText[i]));
+        charPointList.push(new CharPoint(points.slice(startIndex, startIndex + lettersPoints[i] - 1), splitText[i], charType));
         startIndex += lettersPoints[i];
     }
+    background(51);
 }
 
 function draw() {
