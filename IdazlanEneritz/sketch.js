@@ -1,20 +1,22 @@
-let txt = "The Coding Train";
+let txt = "Rainbow";
+let txtSize = 250;
 let font;
-let points;
-let drawIndex;
-let patata = [];
-let startIndex;
+
+let lettersPoints = [];
+let charPointList = [];
+
+let offset = 0.0;
 let rainbow = [];
 
-let charPointList = [];
-let offset = 0.0;
-
 function preload(){
-    font = loadFont('ParryHotter.ttf');
+    //Load the font for the text
+    font = this.loadFont('fonts/RainbowColors.ttf');
 }
 
 function setup() {
+    this.createCanvas(800, 400);
 
+    //Add the rainbow colors to the vector
     rainbow.push(color(255, 0, 0));
     rainbow.push(color(255, 165, 0));
     rainbow.push(color(255, 255, 0));
@@ -23,58 +25,38 @@ function setup() {
     rainbow.push(color(75, 0, 130));
     rainbow.push(color(238, 130, 238));
 
-    createCanvas(800, 400);
-    background(250, 244, 227);
-
-    points = font.textToPoints(txt, 50, 200, 100, {
+    // Generate the point vector for the text
+    let points = font.textToPoints(txt, 75, 250, txtSize, {
         sampleFactor: 1,
         simplifyThreshold: 0
     });
 
-    splitText = txt.split('');
+    // Calculate the number of points for each letter of the text
+    let splitText = txt.split('');
     splitText.forEach(function (c) {
-        let cosa = font.textToPoints(c, 75, 200, 100, {
+        let word = font.textToPoints(c, 75, 250, txtSize, {
             sampleFactor: 1,
             simplifyThreshold: 0
         });
-        patata.push(cosa.length);
+        lettersPoints.push(word.length);
     });
-    drawIndex = 0;
-    startIndex = 0;
 
-    for(let i = 0; i < patata.length; i++){
-        charPointList.push(new CharPoint(points.slice(startIndex, startIndex + patata[i] - 1), splitText[i]));
-        startIndex += patata[i];
+    // Divide the text points vector in a CharPoints vector
+    // A CharPoints object contains the points for each letter of the text
+    let startIndex = 0;
+    for(let i = 0; i < lettersPoints.length; i++){
+        charPointList.push(new CharPoint(points.slice(startIndex, startIndex + lettersPoints[i] - 1), splitText[i]));
+        startIndex += lettersPoints[i];
     }
-
-    let col = this.lerpColor(rainbow[0], rainbow[1], offset);
-
 }
 
 function draw() {
     background(51);
+
+    // Draw all the letters of the text
     for(let i = 0; i < charPointList.length; i++){
-        charPointList[i].draw(i, offset, frameCount, this);
+        strokeWeight(2);
+        charPointList[i].draw(i, offset, this.frameCount, this);
     }
-    offset -= 0.1;
-
-    /*if(drawIndex < points.length){
-        for(let i = 0; i < drawSpeed && drawIndex+i < points.length; i++) {
-            let p = (drawIndex+i)/points.length;
-            stroke(0, (1-p)*255, p*255);
-            if(drawIndex+i === 0) {
-                point(points[drawIndex + i].x, points[drawIndex + i].y);
-            }else{
-                line(points[drawIndex + i - 1].x, points[drawIndex + i -1].y, points[drawIndex + i].x, points[drawIndex + i].y)
-            }
-        }
-        drawIndex += drawSpeed;
-    }*/
-
-
-    /*fill(218, 165, 32);
-    noStroke();
-    textFont(font);
-    textSize(85);
-    text(txt, 70, 100);*/
+    offset -= 0.01;
 }
