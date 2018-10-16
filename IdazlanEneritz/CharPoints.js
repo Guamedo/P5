@@ -23,7 +23,7 @@ class CharPoint{
      * @param canvas: canvas in which the letter has to be drawn
      */
     draw(index, offset, step, canvas){
-        canvas.push();
+        push();
         beginShape();
         if(this.charType === 0 || step <= this.points.length){
             noFill();
@@ -45,6 +45,10 @@ class CharPoint{
             vertex(this.points[i].x, this.points[i].y);
         }
         endShape();
+
+        /*if(step <= this.points.length) {
+            ellipse(this.points[max(0, step - 1)].x, this.points[max(0, step - 1)].y, 8, 8);
+        }*/
         pop();
     }
 }
