@@ -10,18 +10,21 @@
         <script language="javascript" type="text/javascript" src="../libraries/opencv.js" ></script>
         <script src="utils.js" type="text/javascript"></script>
         <script src="sketch.js"></script>
+        <script src="Diana.js"></script>
     </head>
     <body>
         <div>
             <video id = "videoInput" hidden></video>
-            <img id="imageSrc" src = "face.jpg" hidden>
             <div class="inputoutput">
                 <canvas id="canvasFrame" hidden></canvas>
-                <canvas id="canvasOutput" ></canvas>
+                <canvas id="canvasOutput" hidden></canvas>
             </div>
         </div>
     </body>
     <script type="text/javascript">
+
+        let FACE_X = 0;
+        let FACE_Y = 0;
 
         let video = document.getElementById("videoInput"); // video is the id of video tag
         navigator.mediaDevices.getUserMedia({ video: true, audio: false })
@@ -33,43 +36,54 @@
                 console.log("An error occurred! " + err);
             });
 
+        let cOut = document.getElementById("canvasOutput");
+        cOut.style.position = "absolute";
+        cOut.style.left = "5px";
+        cOut.style.top = "5px";
+
         let canvasFrame = document.getElementById("canvasFrame"); // canvasFrame is the id of <canvas>
         let context = canvasFrame.getContext("2d");
+
         let src;
         let dst;
-        let width;
-        let height;
+
+        let camWidth;
+        let camHeight;
+
         let faces;
+        let msize;
         let faceCascade;
 
         video.onloadeddata = function(){
-            width = video.videoWidth;
-            height = video.videoHeight;
+            camWidth = video.videoWidth;
+            camHeight = video.videoHeight;
 
-            canvasFrame.width = width;
-            canvasFrame.height = height;
+            canvasFrame.width = camWidth;
+            canvasFrame.height = camHeight;
 
             faces = new cv.RectVector();
-            src = new cv.Mat(height, width, cv.CV_8UC4);
-            dst = new cv.Mat(height, width, cv.CV_8UC1);
+            src = new cv.Mat(camHeight, camWidth, cv.CV_8UC4);
+            dst = new cv.Mat(camHeight, camWidth, cv.CV_8UC1);
 
-            const FPS = 30;
+            faces = new cv.RectVector();
+            msize = new cv.Size(0, 0);
+
+            const FPS = 1;
+
             function processVideo() {
                 let begin = Date.now();
-                context.drawImage(video, 0, 0, width, height);
-                src.data.set(context.getImageData(0, 0, width, height).data);
+                context.drawImage(video, 0, 0, camWidth, camHeight);
+                src.data.set(context.getImageData(0, 0, camWidth, camHeight).data);
                 cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
 
-                let faces = new cv.RectVector();
-
-                let msize = new cv.Size(0, 0);
                 faceCascade.detectMultiScale(dst, faces);
-
                 for (let i = 0; i < faces.size(); ++i) {
                     let roiGray = dst.roi(faces.get(i));
                     let roiSrc = src.roi(faces.get(i));
                     let point1 = new cv.Point(faces.get(i).x, faces.get(i).y);
                     let point2 = new cv.Point(faces.get(i).x + faces.get(i).width, faces.get(i).y + faces.get(i).height);
+                    FACE_X = faces.get(i).x + faces.get(i).width/2;
+                    FACE_Y = faces.get(i).y + faces.get(i).height/2;
                     cv.rectangle(src, point1, point2, [0, 255, 0, 255], 2);
                     roiGray.delete(); roiSrc.delete();
                 }
@@ -79,7 +93,6 @@
                 let delay = 1000/FPS - (Date.now() - begin);
                 setTimeout(processVideo, delay);
             }
-
             setTimeout(processVideo, 0);
         };
 
@@ -100,5 +113,6 @@
                 console.log("face cascade not loaded");
             }
         }
+
     </script>
 </html>
