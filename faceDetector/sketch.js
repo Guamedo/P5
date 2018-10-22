@@ -9,7 +9,7 @@ function setup() {
     diana1 = new Diana(2*width/8, height/2, width/5, width/50);
     diana2 = new Diana(6*width/8, height/2, width/5, width/50);
     console.log(diana1);
-    canvas.style('z-index', -1);
+    canvas.style('z-index', -2);
 
     /*
     for(let i = 0; i <= 40; i++){

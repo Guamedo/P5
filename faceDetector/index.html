@@ -15,6 +15,7 @@
     <body>
         <div>
             <video id = "videoInput" hidden></video>
+            <img id="videoImage" src="video_icon.png" width=30 height=30>
             <div class="inputoutput">
                 <canvas id="canvasFrame" hidden></canvas>
                 <canvas id="canvasOutput" hidden></canvas>
@@ -25,6 +26,8 @@
 
         let FACE_X = 0;
         let FACE_Y = 0;
+        let FACE_W = 0;
+        let FACE_H = 0;
 
         let video = document.getElementById("videoInput"); // video is the id of video tag
         navigator.mediaDevices.getUserMedia({ video: true, audio: false })
@@ -36,10 +39,24 @@
                 console.log("An error occurred! " + err);
             });
 
+        let videoImg = document.getElementById("videoImage");
+        videoImg.style.position = "absolute";
+        videoImg.style.left = "5px";
+        videoImg.style.top = "5px";
+
         let cOut = document.getElementById("canvasOutput");
         cOut.style.position = "absolute";
         cOut.style.left = "5px";
         cOut.style.top = "5px";
+        cOut.style.zIndex = "-1";
+
+        videoImg.onmouseenter = function(){
+            cOut.hidden = false;
+        };
+
+        videoImg.onmouseout = function(){
+            cOut.hidden = true;
+        };
 
         let canvasFrame = document.getElementById("canvasFrame"); // canvasFrame is the id of <canvas>
         let context = canvasFrame.getContext("2d");
@@ -68,7 +85,7 @@
             faces = new cv.RectVector();
             msize = new cv.Size(0, 0);
 
-            const FPS = 1;
+            const FPS = 30;
 
             function processVideo() {
                 let begin = Date.now();
@@ -84,11 +101,17 @@
                     let point2 = new cv.Point(faces.get(i).x + faces.get(i).width, faces.get(i).y + faces.get(i).height);
                     FACE_X = faces.get(i).x + faces.get(i).width/2;
                     FACE_Y = faces.get(i).y + faces.get(i).height/2;
+                    FACE_W = faces.get(i).width;
+                    FACE_H = faces.get(i).height;
                     cv.rectangle(src, point1, point2, [0, 255, 0, 255], 2);
                     roiGray.delete(); roiSrc.delete();
                 }
 
-                cv.imshow("canvasOutput", src); // canvasOutput is the id of another <canvas>;
+                let rs = new cv.Mat();
+                let dsize = new cv.Size(300, 200);
+                cv.resize(src, rs, dsize, 0, 0, cv.INTER_AREA);
+
+                cv.imshow("canvasOutput", rs); // canvasOutput is the id of another <canvas>;
                 // schedule next one.
                 let delay = 1000/FPS - (Date.now() - begin);
                 setTimeout(processVideo, delay);
