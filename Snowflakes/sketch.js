@@ -1,4 +1,4 @@
-let hexSize = 20;
+let hexSize = 5;
 
 let randomX;
 let randomY;
