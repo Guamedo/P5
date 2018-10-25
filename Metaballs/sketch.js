@@ -36,9 +36,9 @@ function draw() {
             let index = x + y * width;
             metaBall.forEach(function(mb){
                 let dist = createVector(x, y).dist(mb.pos);
-                pixels[index*4] += 0;
-                pixels[index*4 + 1] += mb.rad/dist;
-                pixels[index*4 + 2] += 0;
+                pixels[index*4] += mb.rad/dist;
+                pixels[index*4 + 1] += 0;
+                pixels[index*4 + 2] += mb.rad/dist;
                 pixels[index*4 + 3] = 255;
             });
             /*let dist = createVector(x, y).dist(metaBall.pos);
