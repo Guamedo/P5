@@ -11,17 +11,10 @@ class Particle{
 	}
 	
 	update(){
-		if(!this.end/*this.pos.dist(this.targetPos) >= 2.5*/){
-			let dir = this.targetPos.copy().sub(this.pos).normalize();
-			this.pos.add(this.speed);
-			this.speed.add(dir.mult(this.atractionForce));
-			if(this.pos.dist(this.targetPos) <= this.speed.mag()){
-				this.end = true;
-			}
-            this.speed.mult(0.99);
-		}else{
-			this.pos = this.targetPos;
-		}
+        let dir = this.targetPos.copy().sub(this.pos).normalize();
+        this.pos.add(this.speed);
+        this.speed.add(dir.mult(this.atractionForce));
+        this.speed.mult(0.99);
 	}
 	
 	draw(){

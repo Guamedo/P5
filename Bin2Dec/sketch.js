@@ -16,7 +16,7 @@ function preload(){
 function setup() {
 	createCanvas(400, 400);
 	
-	let num = Math.floor(random(256));
+	let num = 42;//Math.floor(random(256));
 	binDisp = new BinaryDisplay(num, width / 2 - (40 * 4 + 4.5 * (20 / 4)), 50, 20, 8);
 
 	points = font.textToPoints(num.toString(), 100, textY, textSize, {
