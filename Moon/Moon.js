@@ -50,10 +50,10 @@ class Moon{
             y = this.pos.y + this.rad*Math.sin(i*interval + Math.PI/2);
 
             let dist = 2*Math.abs(this.pos.x - x);
-            if(p > 1){
-                vertex(x + dist*(p-1), y);
-            }else{
+            if(p < 1){
                 vertex(x, y);
+            }else{
+                vertex(x + dist*(1-(p-1)), y);
             }
         }
 
@@ -63,15 +63,15 @@ class Moon{
         vertex(x, y);
 
         // Draw the second half of the shape (the right side)
-        for(let i = this.detail/2 - 1; i >= 1; i--){
+        for(let i = this.detail/2 + 1; i < this.detail; i++){
             x = this.pos.x + this.rad*Math.cos(i*interval + Math.PI/2);
             y = this.pos.y + this.rad*Math.sin(i*interval + Math.PI/2);
 
             let dist = 2*Math.abs(this.pos.x - x);
-            if(p > 1){
-                vertex(x+dist, y);
+            if(p < 1){
+                vertex(x - dist*p, y);
             }else{
-                vertex(x+dist*p, y);
+                vertex(x, y);
             }
         }
         endShape(CLOSE);
