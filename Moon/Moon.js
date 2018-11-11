@@ -1,9 +1,15 @@
 class Moon{
-    constructor(x, y, rad, det = 100){
+    constructor(x, y, rad, col, det = 100){
         this.pos = createVector(x, y);
         this.rad = rad;
+        this.color = col;
         this.detail = det;
         this.phase = 0.0;
+    }
+
+    update(rad, col){
+        this.rad = rad;
+        this.color = col;
     }
 
     draw(p){
@@ -13,7 +19,7 @@ class Moon{
         *****************/
 
         // Set the style
-        fill(150, 30, 30);
+        fill(this.color);
         stroke(0);
 
         // Draw the ellipse
