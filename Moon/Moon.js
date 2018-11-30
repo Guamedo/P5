@@ -19,6 +19,7 @@ class Moon{
         *****************/
 
         // Set the style
+        /*
         fill(this.color);
         stroke(0);
 
@@ -31,14 +32,18 @@ class Moon{
             vertex(x, y);
         }
         endShape(CLOSE);
-
+        */
+        let interval = 2*Math.PI/this.detail;
+        imageMode(CENTER);
+        tint(this.color);
+        image(moonImage, this.pos.x, this.pos.y, 2*this.rad, 2*this.rad);
 
         /************************
          * Draw the Moon Shadow *
          ************************/
 
         // Set the style
-        fill(0, 250);
+        fill(0, 230);
         stroke(0);
         strokeWeight(2);
 

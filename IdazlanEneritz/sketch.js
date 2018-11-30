@@ -1,4 +1,4 @@
-let txt = "IDAZLANA ENERITZ";
+let txt = "RAINBOW";
 let txtSize = 300;
 let margin = 50;
 let font;

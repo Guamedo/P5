@@ -16,7 +16,7 @@ function preload(){
 function setup() {
 	createCanvas(400, 400);
 	
-	let num = 42;//Math.floor(random(256));
+	let num = Math.floor(random(256));
 	binDisp = new BinaryDisplay(num, width / 2 - (40 * 4 + 4.5 * (20 / 4)), 50, 20, 8);
 
 	points = font.textToPoints(num.toString(), 100, textY, textSize, {
@@ -60,7 +60,9 @@ function setup() {
 								    	points[j].y,
 								   		0,
 										4,
-									   	255*((binDisp.number & pow(2, binDisp.bitNum-1-i)) >> (binDisp.bitNum-1-i))));
+									   	color(noise(points[j].x*0.05, points[j].y*0.05)*255,
+										(1-noise(points[j].x*0.05, points[j].y*0.05))*255,
+										noise(points[j].y*0.05, points[j].x*0.05)*255)/*255*((binDisp.number & pow(2, binDisp.bitNum-1-i)) >> (binDisp.bitNum-1-i))*/));
 		}
 	}
 }
