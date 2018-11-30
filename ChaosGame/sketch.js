@@ -20,15 +20,18 @@ function setup() {
 
 function draw() {
     for(let i = 0; i < 100; i++){
-        colorMode(HSB, PI, min(width/2, height/2), 1, 1);
-        let angle = Math.atan2(p.y, p.x);
+        colorMode(HSB, 2*PI, min(width/2, height/2), 1, 1);
+
+        let angle = Math.atan2(height/2 - p.y, width/2 - p.x);
         if(angle < 0){
-            angle = PI-angle;
+            angle = 2*PI + angle;
         }
+
         stroke(angle, createVector(width/2, height/2).dist(p), 1, 0.8);
         point(p.x, p.y);
+
         let r = floor(random(5));
-        while(r == pVertex){
+        while(r === pVertex){
             r = floor(random(5));
         }
         p = (shapePoints[r].copy().add(p)).div(2);
