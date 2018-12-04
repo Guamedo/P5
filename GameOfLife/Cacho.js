@@ -3,17 +3,30 @@ class Cacho{
         this.pos = pos;
         this.w = width;
         this.h = height;
-        if(random(1) < 0.1){
+        if(random(1) < 0.5){
             this.state = 1;
         }else{
             this.state = 0;
         }
-        this.a = PI*(1-this.state);
+        this.nextState = this.state;
         this.rax = floor(random(2));
     }
 
-    update(){
-        this.a -= 0.05;
+    update(num){
+        if(this.state === 0){
+            if(num === 3){
+                this.nextState = 1;
+            }
+        }else{
+            if(num !== 2 && num !== 3){
+                this.nextState = 0;
+            }
+        }
+        this.a = PI*(1-this.state);
+    }
+
+    change(){
+        this.state = this.nextState;
     }
 
     draw(){

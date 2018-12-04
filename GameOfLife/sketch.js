@@ -1,4 +1,4 @@
-let rowsNum = 9;
+let rowsNum = 10;
 let colsNum = 16;
 
 let cachos = [];
@@ -34,9 +34,36 @@ function draw() {
             cachos[i][j].draw();
         }
     }
-    for(let i = 0; i < colsNum; i++){
-        for(let j = 0; j < rowsNum; j++){
-            cachos[i][j].update();
+
+    if(frameCount%10 === 0) {
+        for (let i = 0; i < colsNum; i++) {
+            for (let j = 0; j < rowsNum; j++) {
+                let sum = 0;
+
+                for (let k = i - 1; k <= i + 1; k++) {
+                    for (let p = j - 1; p <= j + 1; p++) {
+                        if (k !== i || p !== j) {
+                            let col = k;
+                            let row = p;
+                            if (col < 0) {
+                                col = colsNum - 1;
+                            }
+                            if (row < 0) {
+                                row = rowsNum - 1;
+                            }
+                            col = col % colsNum;
+                            row = row % rowsNum;
+                            sum += cachos[col][row].state;
+                        }
+                    }
+                }
+                cachos[i][j].update(sum);
+            }
+        }
+        for (let i = 0; i < colsNum; i++) {
+            for (let j = 0; j < rowsNum; j++) {
+                cachos[i][j].change();
+            }
         }
     }
 
