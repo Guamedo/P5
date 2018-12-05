@@ -3,30 +3,58 @@ class Cacho{
         this.pos = pos;
         this.w = width;
         this.h = height;
-        if(random(1) < 0.5){
+        if(random(1) < 0.25){
             this.state = 1;
         }else{
             this.state = 0;
         }
+        this.a = PI*(1-this.state);
         this.nextState = this.state;
         this.rax = floor(random(2));
+        this.isUpdated = true;
     }
 
     update(num){
-        if(this.state === 0){
-            if(num === 3){
-                this.nextState = 1;
-            }
-        }else{
-            if(num !== 2 && num !== 3){
-                this.nextState = 0;
+        if(this.isUpdated) {
+            if (this.state === 0) {
+                if (num === 3) {
+                    this.nextState = 1;
+                    this.isUpdated = false;
+                }
+            } else {
+                if (num !== 2 && num !== 3) {
+                    this.nextState = 0;
+                    this.isUpdated = false;
+                }
             }
         }
-        this.a = PI*(1-this.state);
     }
 
     change(){
-        this.state = this.nextState;
+        if(!this.isUpdated){
+            if(this.state === 0){
+                this.a = max(0, this.a - 0.2);
+                if(this.a === 0){
+                    this.isUpdated = true;
+                    this.state = this.nextState;
+                    this.rax = floor(random(2));
+                }
+            }else{
+                this.a = min(PI, this.a + 0.2);
+                if(this.a === PI){
+                    this.isUpdated = true;
+                    this.state = this.nextState;
+                    this.rax = floor(random(2));
+                }
+            }
+        }
+    }
+
+    setState(s){
+        this.state = s;
+        this.nextState = this.state;
+        this.isUpdated = true;
+        this.a = PI*(1-this.state);
     }
 
     draw(){
