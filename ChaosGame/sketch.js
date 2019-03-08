@@ -12,6 +12,8 @@ let restrictMode = 1;
 let img;
 let imgMask;
 
+let pointCount;
+
 function preload() {
     // Load HSB circle image
     img = loadImage('images/hsb.png');
@@ -64,6 +66,8 @@ function setup() {
     }
     img.updatePixels();
     imgMask.updatePixels();
+
+    pointCount = 0;
 }
 
 function draw() {
@@ -76,7 +80,7 @@ function draw() {
     pop();
 
     // Add 500 new points to the image and draw the lines connecting them
-    for(let i = 0; i < 500 && frameCount < 2000; i++){
+    for(let i = 0; i < 500 && pointCount < 1e6; i++){
         // Set the color mode to HSB
         pg.colorMode(HSB, 2*PI, min(width/2, height/2), 1, 1);
 
@@ -91,19 +95,20 @@ function draw() {
 
         // Draw the point
         pg.point(p.x, p.y);
+        pointCount++;
 
         // Calculate the next random point
         let r = floor(random(shapePointNumber));
         if(shapePointNumber === 5){
             switch (restrictMode) {
                 case 0:
-                    //Apply restriction (pentagon cosa)
+                    //Apply restriction (pentagon 1)
                     while(r === pVertex){
                         r = floor(random(shapePointNumber));
                     }
                     break;
                 case 1:
-                    // Apply restriction (pentagon star)
+                    // Apply restriction (pentagon 2 (star))
                     r1 = mod(r + 1, 5);
                     r4 = mod(r + 4, 5);
                     while(r1 === pVertex && r1 === ppVertex || r4 === pVertex && r4 === ppVertex){

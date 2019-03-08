@@ -7,8 +7,8 @@ let allUpdated = true;
 let state = 0;
 
 function setup() {
-    let cvn = createCanvas(1200, 700, WEBGL);
-    cvn.position((windowWidth-width)/2, (windowHeight-height)/2);
+    let cvn = createCanvas(windowWidth-20, windowHeight-20, WEBGL);
+    cvn.position(10, 10);
     background(51);
 
     let cachoWidth = width/(colsNum);

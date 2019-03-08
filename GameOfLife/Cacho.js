@@ -33,14 +33,14 @@ class Cacho{
     change(){
         if(!this.isUpdated){
             if(this.state === 0){
-                this.a = max(0, this.a - 0.2);
+                this.a = max(0, this.a - 0.5);
                 if(this.a === 0){
                     this.isUpdated = true;
                     this.state = this.nextState;
                     this.rax = floor(random(2));
                 }
             }else{
-                this.a = min(PI, this.a + 0.2);
+                this.a = min(PI, this.a + 0.5);
                 if(this.a === PI){
                     this.isUpdated = true;
                     this.state = this.nextState;
