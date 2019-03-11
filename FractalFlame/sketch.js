@@ -1,5 +1,6 @@
 let p;
-let sc = 100;
+let sc = 300;
+let scDir = 1;
 let F = new FunctionSet();
 let V = new FunctionSet();
 
@@ -46,12 +47,28 @@ function draw() {
     scale(1, -1);
     background(0, 10);
     stroke(80, 200, 120);
-    for(let i = 0; i < 1000/*2500*/; i++) {
+    //stroke(176,224,230);
+    for(let i = 0; i < 10000; i++) {
         point(sc * p.x, sc * p.y);
-        //p = F.getFunction(random(1))(p);
-        p = F.getFunction(random(1))(V.getFunction(random(1))(p));
+        let r = random(1);
+        if(r < 1/3){
+            stroke(200, 50, 50)
+        }else if (r < 2/3){
+            stroke(50, 200, 50)
+        }else{
+            stroke(50, 50, 200);
+        }
+        //p = F.getFunction(r)(p);
+        p = F.getFunction(r)(V.getFunction(random(1))(p));
         p.x += noise(p.x+cos(offset+PI), p.y+sin(offset))*2-1;
         p.y += noise(p.x+cos(offset), p.y+sin(offset+PI/2))*2-1;
     }
     offset += 0.008;
+    /*sc += scDir*2;
+    if(sc > 600){
+        scDir = -1;
+    }
+    if(sc < 150){
+        scDir = 1;
+    }*/
 }
