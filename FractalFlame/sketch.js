@@ -1,5 +1,5 @@
 let p;
-let sc = 300;
+let sc = 200;
 let scDir = 1;
 let F = new FunctionSet();
 let V = new FunctionSet();
@@ -9,6 +9,7 @@ let offset = 0.0;
 function setup() {
     createCanvas(windowWidth, windowHeight);
     background(255);
+    noiseSeed(31415);
 
     /* BARNSLEY FERN *//*
     F.addFunction(function(p){return createVector(0, 0.16*p.y)}, 10);
@@ -46,24 +47,24 @@ function draw() {
     translate(width/2, height/2/*+150*/);
     scale(1, -1);
     background(0, 10);
-    stroke(80, 200, 120);
+    stroke(80, 220, 120);
     //stroke(176,224,230);
-    for(let i = 0; i < 10000; i++) {
+    for(let i = 0; i < 2000; i++) {
         point(sc * p.x, sc * p.y);
         let r = random(1);
-        if(r < 1/3){
+        /*if(r < 1/3){
             stroke(200, 50, 50)
         }else if (r < 2/3){
             stroke(50, 200, 50)
         }else{
             stroke(50, 50, 200);
-        }
+        }*/
         //p = F.getFunction(r)(p);
         p = F.getFunction(r)(V.getFunction(random(1))(p));
         p.x += noise(p.x+cos(offset+PI), p.y+sin(offset))*2-1;
         p.y += noise(p.x+cos(offset), p.y+sin(offset+PI/2))*2-1;
     }
-    offset += 0.008;
+    offset += 0.01;
     /*sc += scDir*2;
     if(sc > 600){
         scDir = -1;
