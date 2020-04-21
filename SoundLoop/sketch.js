@@ -7,11 +7,10 @@ let sound;
 let amplitude;
 
 function preload(){
-    sound = loadSound('music/impacto.mp3');
+    sound = loadSound('music/krippykush.mp3');
 }
 
 function keyPressed(){
-    
     if(keyCode == 13 && !sound.isPlaying()){
         sound.play();        
     }

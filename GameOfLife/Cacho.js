@@ -62,7 +62,7 @@ class Cacho{
         push();
         ambientLight(255);
         ambientMaterial(255);
-        //noStroke();
+        noStroke();
         translate(this.pos.x, this.pos.y);
         if(this.rax){
             rotateX(this.a);

@@ -30,6 +30,7 @@ function setup() {
 function draw() {
     background(0);
     translate(-width/2, -height/2);
+    noStroke();
 
     for(let i = 0; i < colsNum; i++){
         for(let j = 0; j < rowsNum; j++){
